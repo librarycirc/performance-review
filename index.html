@@ -322,6 +322,22 @@ function showResults(){
   showScreen('screen-result');
   const pct=Math.round(score/QS.length*100);
   const master=pct>=90;
+  const userName = localStorage.getItem("userName") || "Unknown";
+
+fetch("YOUR_WEBHOOK_URL_HERE", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: userName,
+    score: score,
+    total: QS.length,
+    percent: pct,
+    passed: master,
+    date: new Date().toLocaleString()
+  })
+});
   document.getElementById('res-icon').textContent=master?'🏆':'📖';
   document.getElementById('res-title').textContent=master?'Outstanding, '+name+'!':'Keep Pushing, '+name+'!';
   document.getElementById('res-sub').textContent=master
