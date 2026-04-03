@@ -318,19 +318,11 @@ function pick(idx,el){
 
 function nextQ(){curQ++;if(curQ>=QS.length)showResults();else renderQ();}
 
-function showResults(){
-  showScreen('screen-result');
-  const pct=Math.round(score/QS.length*100);
-  const master=pct>=90;
-  const userName = localStorage.getItem("userName") || "Unknown";
-
-fetch("YOUR_WEBHOOK_URL_HERE", {
+function showResults(){fetch("YOUR_WEBHOOK_URL", {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
+  headers: {"Content-Type":"application/json"},
   body: JSON.stringify({
-    name: userName,
+    name: localStorage.getItem("userName") || "Unknown",
     score: score,
     total: QS.length,
     percent: pct,
@@ -338,6 +330,12 @@ fetch("YOUR_WEBHOOK_URL_HERE", {
     date: new Date().toLocaleString()
   })
 });
+  showScreen('screen-result');
+  const pct=Math.round(score/QS.length*100);
+  const master=pct>=90;
+  const userName = localStorage.getItem("userName") || "Unknown";
+
+
   document.getElementById('res-icon').textContent=master?'🏆':'📖';
   document.getElementById('res-title').textContent=master?'Outstanding, '+name+'!':'Keep Pushing, '+name+'!';
   document.getElementById('res-sub').textContent=master
